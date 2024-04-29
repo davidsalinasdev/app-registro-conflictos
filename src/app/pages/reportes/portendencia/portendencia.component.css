@@ -1,0 +1,204 @@
+i {
+  font-size: 2.5rem;
+  font-weight: lighter;
+  color: #ffffff;
+  margin-right: 15px;
+}
+
+.card-estado {
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cant-latencia {
+  font-size: 1.5rem;
+}
+
+.texto-tabla {
+  color: #ffffffb2;
+  background: rgb(12, 36, 97);
+  background: linear-gradient(90deg, rgba(12, 36, 97, 1) 0%, rgba(30, 55, 153, 1) 35%, rgba(74, 105, 189, 1) 100%);
+}
+
+.text th {
+  font-weight: 500;
+  padding: 1rem;
+}
+
+.datos td {
+  padding: 0.8rem;
+  color: #666666;
+}
+
+.icon-font {
+  font-size: 1.1rem;
+  color: #666666;
+}
+
+.icon-imprimir {
+  font-size: 1.1rem;
+  color: #ffffff
+}
+
+.file-reunion {
+  font-size: 1.1rem;
+}
+
+::ng-deep .cdk-overlay-container {
+  z-index: 9999 !important;
+}
+
+.div-prioridad {
+  margin-top: 6rem;
+}
+
+@media (min-width: 992px) {
+  .div-prioridad {
+    margin-top: 4rem;
+  }
+}
+
+.div-asunto {
+  margin-top: 3rem;
+}
+
+.texto-asunto {
+  font-size: small;
+}
+
+.tabla-datos {
+  box-shadow: 2px 4px 10px -6px rgba(0, 0, 0, .75);
+}
+
+.titulo-gobernacion {
+  font-size: 1rem;
+  font-family: 'Times New Roman', Times, serif !important;
+  text-align: center;
+}
+
+.fuente-mostrar {
+  font-family: 'Times New Roman',
+    Times,
+    serif !important;
+}
+
+.fuente-detalle {
+  font-weight: bold;
+  font-size: .8rem;
+}
+
+.fuente-detalle-span {
+  font-size: .8rem;
+  font-weight: 100;
+}
+
+.fuente-justificado {
+  text-align: justify !important;
+  padding-left: 5rem;
+}
+
+.motivo-principal {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.estadistica {
+  padding-left: 5rem;
+}
+
+.parrafo-estadistica {
+  font-size: 15px !important;
+}
+
+.boton {
+
+  border-radius: 10px 10px 10px 10px;
+  padding: 2px 10px;
+}
+
+.latente {
+  border: 1px solid #6c757d;
+  background-color: #6c757d;
+  color: #ffffff;
+}
+
+.temprano {
+  border: 1px solid #10ac84;
+  background-color: #10ac84;
+  color: #ffffff;
+}
+
+.precrisis {
+  border: 1px solid #f7b731;
+  background-color: #f7b731;
+  color: #212529;
+}
+
+.crisis {
+  border: 1px solid #eb3b5a;
+  background-color: #eb3b5a;
+  color: #ffffff;
+}
+
+.texto-situacion {
+  font-size: 15px;
+}
+
+.paginacion {
+  margin-top: 20px;
+}
+
+.overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-height: 16px;
+  /* fallback */
+  max-height: 32px;
+  /* fallback */
+  -webkit-line-clamp: 2;
+  /* number of lines to show */
+  -webkit-box-orient: vertical;
+  font-size: 15px;
+}
+
+
+.my-drop-zone {
+  border: dotted 3px lightgray;
+}
+
+.nv-file-over {
+  border: dotted 3px red;
+}
+
+/* Default class applied to drop zones on over */
+.another-file-over-class {
+  border: dotted 3px green;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+.text-archivos {
+  font-size: 1.2rem;
+}
+
+
+#myModal_mostrar {
+  z-index: 100000;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.3;
+  /*opcional: para dar una apariencia visual de que el botón está deshabilitado*/
+  cursor: not-allowed;
+  /*opcional: para cambiar el cursor al pasar el ratón por encima del botón*/
+}
+
+.icon-ver {
+  font-size: 1.2rem;
+}

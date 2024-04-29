@@ -1,0 +1,898 @@
+ <div class="contenedor fade animated fadeIn fast">
+   <app-breadcrumbs></app-breadcrumbs>
+ </div>
+
+ <div class="container-fluid">
+   <div class="contenido">
+     <!-- Boton de crear nueva reunión -->
+     <div class="fade animated fadeIn fast">
+       <div class="row">
+
+         <div class="col-lg-3">
+           <div class="card bg-secondary card-estado" (click)="this.listLatencia('Latente')">
+             <div class="card-body">
+               <div class="d-flex no-block">
+                 <div class="m-r-20 align-self-center">
+                   <i class="bi bi-card-checklist"></i>
+                 </div>
+                 <div class="align-self-center">
+                   <p class="text-white m-t-10 m-b-0">Latente</p>
+                   <p class="m-t-0 text-white cant-latencia">{{ this.latente }}</p>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+         <div class="col-lg-3 mt-2 mt-lg-0">
+           <div class="card bg-success card-estado" (click)="this.listLatencia('Temprano')">
+             <div class="card-body">
+               <div class="d-flex no-block">
+                 <div class="m-r-20 align-self-center">
+                   <i class="bi bi-card-checklist"></i>
+                 </div>
+                 <div class="align-self-center">
+                   <p class="text-white m-t-10 m-b-0">Temprano</p>
+                   <p class="m-t-0 text-white cant-latencia">{{ this.temprano }}</p>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+         <div class="col-lg-3 mt-2 mt-lg-0">
+           <div class="card bg-warning card-estado" (click)="this.listLatencia('Pre-crisis')">
+             <div class="card-body">
+               <div class="d-flex no-block">
+                 <div class="m-r-20 align-self-center">
+                   <i class="bi bi-card-checklist"></i>
+                 </div>
+                 <div class="align-self-center">
+                   <p class="text-white m-t-10 m-b-0">Pre-crisis</p>
+                   <p class="m-t-0 text-white cant-latencia">{{ this.precrisis }}</p>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+         <div class="col-lg-3 mt-2 mt-lg-0">
+           <div class="card bg-danger card-estado" (click)="this.listLatencia('Crisis')">
+             <div class="card-body">
+               <div class="d-flex no-block">
+                 <div class="m-r-20 align-self-center">
+                   <i class="bi bi-card-checklist"></i>
+                 </div>
+                 <div class="align-self-center">
+                   <p class="text-white m-t-10 m-b-0">Crisis</p>
+                   <p class="m-t-0 text-white cant-latencia">{{ crisis }}</p>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+
+
+       </div>
+     </div>
+
+
+     <div *ngIf="this.mostrarTabla" class="row mt-4 fade animated fadeIn fast">
+       <!-- Loader -->
+       <div *ngIf="this.cargando; else notCargando" class="col-12 mt-3">
+         <div class="alert alert-primary text-center">
+           <h4 class="alert-heading">Cargando</h4>
+           <i class="fa fa-spin fa-refresh fa-2x"></i>
+           <p class="mb-0">Por favor espere</p>
+         </div>
+       </div>
+
+       <!-- Tabla de datos -->
+       <ng-template #notCargando>
+         <div class="col-12">
+           <p>Lista con nivel de tendencia: {{ this.latencia }}</p>
+           <div class="table-responsive">
+             <table class="table tabla-datos">
+               <thead class="table texto-tabla">
+                 <tr class="text">
+                   <th style="width: 1%;">Cod.</th>
+                   <th style="width: 10%;">Fecha, hora de inicio/Lugar</th>
+                   <th>Medida</th>
+                   <th>Actor demandante</th>
+                   <th>Demanda</th>
+                   <th style="width: 5%;">Nivel y tendencia</th>
+                   <th>Fuente</th>
+                   <th>Estado reunión</th>
+                   <th>Usuario</th>
+                   <th>Acciones</th>
+                 </tr>
+               </thead>
+               <tbody class="bg-white">
+                 <tr class="datos texto-situacion" *ngFor="let item of this.tendencia | paginate: { itemsPerPage: 5, currentPage: this.p, totalItems:
+                    this.total,id: 'unoNormal' }">
+                   <td>{{ item.id }}</td>
+                   <td class="texto-situacion">
+                     <span class="text-black">Fecha:</span> {{ item.fecha_inicio }}<br>
+                     <span class="text-black">Hora:</span> {{ item.hora_inicio }}<br>
+                     <span class="text-black">Lugar:</span> {{ item.lugar_reunion }}
+                   </td>
+                   <td class="texto-situacion text-black">{{ item.medida }}</td>
+                   <td class="texto-situacion text-black">{{ item.actor_demandante }}</td>
+                   <td class="texto-situacion">{{ item.demanda }}</td>
+
+                   <!-- <td class="texto-situacion "> -->
+                   <!-- <div class="ql-container ql-snow " style="border-width: 0;">
+                        <div class="ql-editor" [innerHTML]="item.situacion_actual">
+                        </div>
+                      </div> -->
+                   <!-- <p class="overflow-ellipsis">{{ item.situacion_actual }}</p>
+                    </td> -->
+
+                   <!-- Impresion de nivel de tendencia -->
+                   <td *ngIf="item.nivel_tendencia==='Latente'"><button
+                       class="boton latente">{{ item.nivel_tendencia }}</button>
+                   </td>
+                   <td *ngIf="item.nivel_tendencia==='Temprano'"><button
+                       class="boton temprano">{{ item.nivel_tendencia }}</button></td>
+                   <td *ngIf="item.nivel_tendencia==='Pre-crisis'"><button
+                       class="boton precrisis">{{ item.nivel_tendencia }}</button></td>
+                   <td *ngIf="item.nivel_tendencia==='Crisis'"><button
+                       class="boton crisis">{{ item.nivel_tendencia }}</button>
+                   </td>
+                   <!-- FIN Impresion de nivel de tendencia -->
+
+                   <td *ngIf="item.fuente  ;else notFuente" class="texto-situacion">
+                     {{ item.fuente }}
+                   </td>
+                   <ng-template #notFuente>
+                     <td class="texto-situacion">Sin fuente</td>
+                   </ng-template>
+
+                   <td *ngIf="item.estado === 'Pendiente';else notPendiente"><span
+                       class="text-success">{{ item.estado }}</span>
+                   </td>
+                   <ng-template #notPendiente>
+                     <td><span class="text-danger">{{ item.estado }}</span></td>
+                   </ng-template>
+                   <td class="texto-situacion">{{ item.user.nombres }} {{ item.user.apellidos }} </td>
+                   <td>
+                     <div class="d-flex">
+                       <a (click)="this.mostrarReunion(item.id)" class="cursor-pointer" title="Ver Reunión"><i
+                           class="text-success icon-font fa fa-eye"></i></a>
+
+
+                       <div *ngIf="this.idSecretaria != item.user.secretaria_id; else notModiReunion">
+                         <a *ngIf="this.rol" class="disabled ms-3 cursor-pointer" title="Editar Reunión"><i
+                             class="text-dark icon-font fa fa-pencil"></i></a>
+                       </div>
+
+                       <ng-template #notModiReunion>
+                         <a *ngIf="this.rol" (click)="this.modificarReunion(item.id)" class="ms-3 cursor-pointer"
+                           title="Editar Reunión"><i class="text-warning icon-font fa fa-pencil"></i></a>
+                       </ng-template>
+
+
+                       <a (click)="this.mostrarHistorial(item.id)" class="ms-3  cursor-pointer"
+                         title="Historial reunión"><i class="text-info icon-font fa fa-book"></i></a>
+
+                       <a *ngIf="this.rol" (click)="this.listArchivos(item.id)" class="ms-3 cursor-pointer"
+                         title="Ver archivos"><i class="text-primary icon-font fa fa-file"></i></a>
+
+                       <div *ngIf="this.idSecretaria != item.user.secretaria_id; else notDestroy">
+                         <a *ngIf="this.rol" class="disabled ms-3 cursor-pointer" title="Estado de reunión"><i
+                             class="text-dark icon-font fa fa-minus-square"></i></a>
+                       </div>
+                       <ng-template #notDestroy>
+                         <a *ngIf="this.rol" (click)="this.destroyReunion(item.id, item.medida, item.estado)"
+                           class="ms-3  cursor-pointer" title="Estado de reunión"><i
+                             class="text-danger icon-font fa fa-minus-square"></i></a>
+                       </ng-template>
+
+                     </div>
+                   </td>
+                 </tr>
+               </tbody>
+             </table>
+           </div>
+
+           <!-- Paginación de datos -->
+           <div class="paginacion">
+             <pagination-controls (pageChange)="this.pageChange($event)" previousLabel="Anterior" nextLabel="Siguiente"
+               [maxSize]="5" id="unoNormal">
+             </pagination-controls>
+           </div>
+
+         </div>
+       </ng-template>
+
+     </div>
+
+   </div>
+ </div>
+
+ <!-- Modal_imprimir_reuniones -->
+ <div class="modal fade animated fadeIn fast" id="myModal_mostrar" tabindex="-1" aria-labelledby="exampleModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog modal-xl">
+     <div class="modal-content">
+       <div class="modal-header bg-primary">
+         <h1 class="modal-title fs-5 text-white display-6" id="exampleModalLabel">GOBIERNO AUTÓNOMO DEPARTAMENTAL DE
+           COCHABAMBA</h1>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       </div>
+
+       <div class="modal-body p-3" id="htmlImprimir">
+
+         <!-- Imagenes -->
+         <div class="row">
+           <div class="col-12 d-flex justify-content-between">
+             <div class="">
+               <img width="140" src="../../../assets/img/escudo1.png" alt="">
+             </div>
+             <div class="">
+               <img width="70" src="../../../assets/img/esccocha.png" alt="">
+             </div>
+             <div class="">
+               <img width="140" src="../../../assets/img/escudo2.png" alt="">
+             </div>
+           </div>
+         </div>
+
+         <!-- Titulo gobernación -->
+         <div class="row">
+           <div class="col-12">
+             <div class="titulo-gobernacion">
+               GOBIERNO AUTÓNOMO DEPARTAMENTAL DE COCHABAMBA
+             </div>
+           </div>
+         </div>
+
+         <!-- Titulo principal de la reunión -->
+         <div class="row">
+           <div class="col-12">
+             <h3 class="text-uppercase text-center mt-4 fuente-mostrar motivo-principal">
+               {{ this.reunionMostrar?.medida }}</h3>
+           </div>
+         </div>
+
+         <!-- Fecha reunión y prioridad -->
+         <div class="row">
+           <div class="col-6 estadistica">
+             <p class="text-uppercase mt-4 mb-0 fuente-mostrar parrafo-estadistica"><span
+                 class="text-uppercase fuente-detalle">Nivel tendencia:
+                 <span class="fuente-detalle-span">{{ this.reunionMostrar?.nivel_tendencia }}</span></span>
+             </p>
+
+             <p class="fuente-mostrar mb-0 parrafo-estadistica">
+               <span class="text-uppercase fuente-detalle">Fecha inicio: <span class="fuente-detalle-span">
+                   {{ this.reunionMostrar?.fecha_inicio }}</span></span>
+             </p>
+
+
+             <p class="fuente-mostrar parrafo-estadistica"><span class="text-uppercase fuente-detalle">Estado reunión:
+                 <span class="fuente-detalle-span">
+                   {{ this.reunionMostrar?.estado }}</span></span>
+             </p>
+
+
+
+           </div>
+           <div class="col-6 estadistica">
+             <p class="text-uppercase mt-4 mb-0 fuente-mostrar parrafo-estadistica"><span
+                 class="text-uppercase fuente-detalle">Lugar reunión: <span
+                   class="fuente-detalle-span">{{ this.reunionMostrar?.lugar_reunion }}</span></span>
+             </p>
+
+             <p class="fuente-mostrar mb-0 parrafo-estadistica">
+               <span class="text-uppercase fuente-detalle">Hora inicio: <span class="fuente-detalle-span">
+                   {{ this.reunionMostrar?.hora_inicio }}</span></span>
+             </p>
+
+             <p class="fuente-mostrar mb-0 parrafo-estadistica">
+               <span class="text-uppercase fuente-detalle">Fuente: <span
+                   class="fuente-detalle-span">{{ this.reunionMostrar?.fuente }}</span></span>
+
+             </p>
+
+           </div>
+           <div class="col-12 estadistica">
+             <p class="text-uppercase mt-2 mb-0 fuente-mostrar parrafo-estadistica"><span
+                 class="text-uppercase fuente-detalle">Demanda: <span class="fuente-detalle-span">
+                   {{ this.reunionMostrar?.demanda }}</span></span>
+             </p>
+           </div>
+           <div class="col-12 estadistica">
+             <p class="text-uppercase mt-0 mb-0 fuente-mostrar parrafo-estadistica"><span
+                 class="text-uppercase fuente-detalle">Actor demandado: <span class=" fuente-detalle-span">
+                   {{ this.reunionMostrar?.actor_demandado }}</span></span>
+             </p>
+           </div>
+           <div class="col-12 estadistica">
+             <p class="text-uppercase mt-0 mb-0 fuente-mostrar parrafo-estadistica"><span
+                 class="text-uppercase fuente-detalle">Actor demandante: <span
+                   class="fuente-detalle-span">{{ this.reunionMostrar?.actor_demandante }}</span></span>
+             </p>
+           </div>
+         </div>
+
+         <!-- Contenido principal -->
+         <div class="row">
+           <div class="col-12 estadistica">
+             <hr>
+           </div>
+           <div class="col-12" id="contenido-principal">
+             <div class="ql-container ql-snow" style="border-width: 0;">
+               <div class="ql-editor fuente-mostrar fuente-justificado"
+                 [innerHTML]="this.reunionMostrar?.situacion_actual">
+               </div>
+             </div>
+           </div>
+         </div>
+
+
+
+       </div>
+
+       <div class="modal-footer p-3 mt-5">
+         <button type="button" class="btn btn-secondary text-uppercase" data-bs-dismiss="modal">Cancelar</button>
+         <button (click)="this.imprimirPDF()" [useExistingCss]="true" printSectionId="htmlImprimir" ngxPrint
+           type="button" class="btn btn-primary text-uppercase" data-bs-dismiss="modal"><i
+             class="icon-imprimir fa fa-print"></i>Imprimir</button>
+       </div>
+
+     </div>
+   </div>
+ </div>
+ <!-- FIN Modal_imprimir_reuniones -->
+
+ <!-- Modal_historial_reuniones -->
+ <div class="modal fade animated fadeIn fast" id="myModal_historial" tabindex="-1" aria-labelledby="exampleModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog modal-xl">
+     <div class="modal-content">
+       <div class="modal-header bg-primary">
+         <h1 class="modal-title fs-5 text-white display-6" id="exampleModalLabel">HISTORIAL DE REUNIONES
+         </h1>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       </div>
+       <!-- Lista de historial de reuniones -->
+       <div class="p-4 col-12">
+         <div class="table-responsive">
+           <table class="table tabla-datos">
+             <thead class="table texto-tabla">
+               <tr class="text">
+                 <th style="width: 1%;">#</th>
+                 <th style="width: 10%;">Fecha, hora de inicio/Lugar</th>
+                 <th>Medida</th>
+                 <th>Actor demandante</th>
+                 <th>Demanda</th>
+                 <th style="width: 5%;">Nivel y tendencia</th>
+                 <th>Fuente</th>
+                 <th>Estado reunión</th>
+                 <th>Usuario</th>
+                 <th>Fecha de modificación</th>
+                 <th>Acciones</th>
+               </tr>
+             </thead>
+             <tbody class="bg-white">
+               <tr class="datos texto-situacion" *ngFor="let item of this.historia; let i = index;">
+                 <td>{{ i+1 }}</td>
+                 <td class="texto-situacion">
+                   <span class="text-black">Fecha:</span> {{ item.fecha_inicio }}<br>
+                   <span class="text-black">Hora:</span> {{ item.hora_inicio }}<br>
+                   <span class="text-black">Lugar:</span> {{ item.lugar_reunion }}
+                 </td>
+                 <td class="texto-situacion text-black">
+                   <p class="overflow-ellipsis">{{ item.medida }}</p>
+                 </td>
+                 <td class="texto-situacion text-black">
+                   <p class="overflow-ellipsis">{{ item.actor_demandante }}</p>
+                 </td>
+                 <td class="texto-situacion">
+                   <p class="overflow-ellipsis">{{ item.demanda }}</p>
+                 </td>
+
+                 <!-- Impresion de nivel de tendencia -->
+                 <td *ngIf="item.nivel_tendencia==='Latente'"><button
+                     class="boton latente">{{ item.nivel_tendencia }}</button></td>
+                 <td *ngIf="item.nivel_tendencia==='Temprano'"><button
+                     class="boton temprano">{{ item.nivel_tendencia }}</button></td>
+                 <td *ngIf="item.nivel_tendencia==='Pre-crisis'"><button
+                     class="boton precrisis">{{ item.nivel_tendencia }}</button></td>
+                 <td *ngIf="item.nivel_tendencia==='Crisis'"><button
+                     class="boton crisis">{{ item.nivel_tendencia }}</button></td>
+                 <!-- FIN Impresion de nivel de tendencia -->
+
+                 <td *ngIf="item.fuente  ;else notFuente" class="texto-situacion">{{ item.fuente }}</td>
+                 <ng-template #notFuente>
+                   <td class="texto-situacion">Sin fuente</td>
+                 </ng-template>
+
+                 <td *ngIf="item.estado === 'Pendiente';else notPendiente"><span
+                     class="text-success">{{ item.estado }}</span></td>
+                 <ng-template #notPendiente>
+                   <td><span class="text-danger">{{ item.estado }}</span></td>
+                 </ng-template>
+                 <td class="texto-situacion">
+                   <p class="overflow-ellipsis">{{ item.user.nombres }} {{ item.user.apellidos }}</p>
+                 </td>
+                 <td class="texto-situacion">{{ item.fecha_modificacion }}</td>
+                 <td>
+                   <div class="d-flex">
+                     <a (click)="this.mostrarReunionHistorial(item.id)" class="cursor-pointer" title="Ver Reunión"><i
+                         class="text-success icon-font fa fa-eye"></i></a>
+
+                     <a (click)="this.listArchivosHistorial(item.id)" class="ms-3 cursor-pointer"
+                       title="Ver archivos"><i class="text-primary icon-font fa fa-file"></i></a>
+
+                   </div>
+                 </td>
+               </tr>
+             </tbody>
+           </table>
+         </div>
+
+       </div>
+
+       <!-- Fin Lista de historial de reuniones -->
+
+     </div>
+   </div>
+ </div>
+ <!-- FIN Modal_historial_reuniones -->
+
+ <!-- Modal_modificar_reuniones -->
+ <div class="modal fade animated fadeIn fast" id="myModal_modificar" tabindex="-1" aria-labelledby="exampleModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog modal-xl">
+     <div class="modal-content">
+       <div class="modal-header bg-danger">
+         <h1 class="modal-title fs-5 text-white display-6" id="exampleModalLabel">MODIFICAR REGISTRO DE REUNIONES</h1>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       </div>
+
+       <!-- Formulario reunion -->
+       <form class="ps-4 pt-4 pe-4 pb-0" [formGroup]="this.formularioModificar" (ngSubmit)="submitModificar()">
+         <div class="modal-body">
+
+           <!-- Seccion fila 1 -->
+           <div class="row">
+
+             <!-- Campo fecha de Inicio -->
+             <div class="col-12 col-xl-2 form-group">
+               <!-- Fecha de inicio -->
+               <p class="m-t-30 mb-0">Fecha de inicio:<span class="text-danger">*</span></p>
+               <mat-form-field class="example-full-width" appearance="outline">
+                 <!-- <mat-label>Fecha de inicio</mat-label> -->
+                 <!-- readonly -->
+                 <input formControlName="fecha_inicioModificar" matInput [matDatepicker]="pickerDos" autocomplete="off"
+                   readonly placeholder="Fecha de inicio">
+                 <mat-datepicker-toggle matSuffix [for]="pickerDos"></mat-datepicker-toggle>
+                 <mat-datepicker #pickerDos></mat-datepicker>
+                 <!-- Validacion -->
+                 <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                 <mat-hint
+                   *ngIf="this.fecha_inicioModificar?.invalid && (this.fecha_inicioModificar?.dirty || this.fecha_inicioModificar?.touched)">
+                   <!-- Errores con expresiones regulares -->
+                   <div *ngIf="this.fecha_inicioModificar?.hasError('required')"
+                     class="animated fadeIn fast text-danger" id="">
+                     Este campo es requerido.
+                   </div>
+                 </mat-hint>
+               </mat-form-field>
+             </div>
+
+             <!-- Hora Inicio -->
+             <div class="col-12 col-xl-2 form-group">
+               <p class="mb-0">Hora inicio:<span class="text-danger">*</span></p>
+               <mat-form-field class="example-full-width" appearance="outline">
+                 <input type="time" matInput formControlName="hora_inicioModificar" autocomplete="off"
+                   spellcheck="false" placeholder="Hora de inicio">
+                 <!-- Validacion -->
+                 <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                 <mat-hint
+                   *ngIf="this.hora_inicioModificar?.invalid && (this.hora_inicioModificar?.dirty || this.hora_inicioModificar?.touched)">
+                   <!-- Errores con expresiones regulares -->
+                   <div *ngIf="this.hora_inicioModificar?.hasError('required')" class="animated fadeIn fast text-danger"
+                     id="">
+                     Este campo es requerido.
+                   </div>
+                 </mat-hint>
+               </mat-form-field>
+             </div>
+
+             <!-- Lugar de la reunión -->
+             <div class="col-12 col-xl-3 form-group">
+               <p class="mb-0">Lugar de la reunión:<span class="text-danger">*</span></p>
+               <mat-form-field class="example-full-width" appearance="outline">
+                 <!-- <mat-label>Lugar de la reunión</mat-label> -->
+                 <input type="text" matInput formControlName="lugar_reunionModificar" autocomplete="off"
+                   spellcheck="false" placeholder="Ingrese el lugar">
+
+                 <!-- Validacion -->
+                 <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                 <mat-hint
+                   *ngIf="this.lugar_reunionModificar?.invalid && (this.lugar_reunionModificar?.dirty || this.lugar_reunionModificar?.touched)">
+                   <!-- Errores con expresiones regulares -->
+                   <div *ngIf="this.lugar_reunionModificar?.hasError('required')"
+                     class="animated fadeIn fast text-danger" id="">
+                     Este campo es requerido.
+                   </div>
+                 </mat-hint>
+               </mat-form-field>
+             </div>
+
+             <!-- Medida -->
+             <div class="col-12 col-xl-5 form-group">
+               <p class="mb-0">Medida:<span class="text-danger">*</span></p>
+               <mat-form-field class="example-full-width" appearance="outline">
+                 <!-- <mat-label>Medida</mat-label> -->
+                 <input type="text" matInput formControlName="medidaModificar" autocomplete="off" spellcheck="false"
+                   placeholder="Ingrese la medida">
+
+                 <!-- Validacion -->
+                 <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                 <mat-hint
+                   *ngIf="this.medidaModificar?.invalid && (this.medidaModificar?.dirty || this.medidaModificar?.touched)">
+                   <!-- Errores con expresiones regulares -->
+                   <div *ngIf="this.medidaModificar?.hasError('required')" class="animated fadeIn fast text-danger"
+                     id="">
+                     Este campo es requerido.
+                   </div>
+                 </mat-hint>
+               </mat-form-field>
+             </div>
+
+           </div>
+
+           <!-- Seccion fila 2 -->
+           <div class="row">
+
+             <!-- Actor demandante -->
+             <div class="col-12 col-xl-3 form-group">
+               <p class="mb-0">Actor demandante:<span class="text-danger">*</span></p>
+               <mat-form-field class="example-full-width" appearance="outline">
+                 <!-- <mat-label>Actor demandante</mat-label> -->
+                 <input type="text" matInput formControlName="actor_demandanteModificar" autocomplete="off"
+                   spellcheck="false" placeholder="Ingrese el actor demandante">
+
+                 <!-- Validacion -->
+                 <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                 <mat-hint
+                   *ngIf="this.actor_demandanteModificar?.invalid && (this.actor_demandanteModificar?.dirty || this.actor_demandanteModificar?.touched)">
+                   <!-- Errores con expresiones regulares -->
+                   <div *ngIf="this.actor_demandanteModificar?.hasError('required')"
+                     class="animated fadeIn fast text-danger" id="">
+                     Este campo es requerido.
+                   </div>
+                 </mat-hint>
+               </mat-form-field>
+             </div>
+
+             <!-- Demanda -->
+             <div class="col-12 col-xl-3 form-group">
+               <p class="mb-0">Demanda:<span class="text-danger">*</span></p>
+               <mat-form-field class="example-full-width" appearance="outline">
+                 <!-- <mat-label>Demanda</mat-label> -->
+                 <input type="text" matInput formControlName="demandaModificar" autocomplete="off" spellcheck="false"
+                   placeholder="Ingrese la demanda">
+
+                 <!-- Validacion -->
+                 <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                 <mat-hint
+                   *ngIf="this.demandaModificar?.invalid && (this.demandaModificar?.dirty || this.demandaModificar?.touched)">
+                   <!-- Errores con expresiones regulares -->
+                   <div *ngIf="this.demandaModificar?.hasError('required')" class="animated fadeIn fast text-danger"
+                     id="">
+                     Este campo es requerido.
+                   </div>
+                 </mat-hint>
+               </mat-form-field>
+             </div>
+
+             <!-- Actor demandado -->
+             <div class="col-12 col-xl-3 form-group">
+               <p class="mb-0">Actor demandado:<span class="text-danger">*</span></p>
+               <mat-form-field class="example-full-width" appearance="outline">
+                 <!-- <mat-label>Actor demandado</mat-label> -->
+                 <input type="text" matInput formControlName="actor_demandadoModificar" autocomplete="off"
+                   spellcheck="false" placeholder="Ingrese el actor demandado">
+
+                 <!-- Validacion -->
+                 <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                 <mat-hint
+                   *ngIf="this.actor_demandadoModificar?.invalid && (this.actor_demandadoModificar?.dirty || this.actor_demandadoModificar?.touched)">
+                   <!-- Errores con expresiones regulares -->
+                   <div *ngIf="this.actor_demandadoModificar?.hasError('required')"
+                     class="animated fadeIn fast text-danger" id="">
+                     Este campo es requerido.
+                   </div>
+                 </mat-hint>
+               </mat-form-field>
+             </div>
+
+             <!-- Fuente -->
+             <div class="col-12 col-xl-3 form-group">
+               <p class="mb-0">Fuente:</p>
+               <mat-form-field class="example-full-width" appearance="outline">
+                 <!-- <mat-label>Fuente</mat-label> -->
+                 <input type="text" matInput formControlName="fuenteModificar" autocomplete="off" spellcheck="false"
+                   placeholder="Ingrese la fuente">
+               </mat-form-field>
+             </div>
+
+           </div>
+
+           <!-- Para subir multiples archivos en angular -->
+           <div class="row">
+             <div class="col-12 col-md-2">
+               <p>Seleccione archivos:</p>
+               <input accept=".jpg,.jpeg,.pdf,.png" type="file" class="d-none" ng2FileSelect [uploader]="uploader"
+                 (change)="this.capturarFiles($event)" multiple #photoInput />
+               <button type="button" class="btn btn-primary" (click)="photoInput.click()"><i
+                   class="icon-imprimir fa fa-folder"></i>
+                 Añadir archivo</button>
+             </div>
+
+             <div class="col-12 col-md-10" style="margin-bottom: 40px">
+               <!-- <span>Cantidad de archivos: {{ uploader.queue.length }}</span> -->
+               <table class="table">
+                 <thead>
+                   <tr>
+                     <th class="text-dark text-muted" width="20%">Nombre</th>
+                     <th class="text-dark text-muted">Tam.</th>
+                     <th class="text-dark text-muted">Acciones</th>
+                   </tr>
+                 </thead>
+                 <tbody>
+                   <tr *ngFor="let item of uploader.queue">
+                     <td><span>{{ item?.file?.name }}</span></td>
+                     <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB
+                     </td>
+
+                     <td nowrap>
+                       <button type="button" class="btn btn-danger btn-sm" (click)="item.remove()">
+                         <span class="glyphicon glyphicon-trash"></span> Eliminar
+                       </button>
+                     </td>
+                   </tr>
+                 </tbody>
+               </table>
+
+             </div>
+
+           </div>
+           <br><br>
+
+           <!-- Situacion actual -->
+           <div class="row form-group">
+             <p class="mb-1">Situación actual:<span class="text-danger">*</span></p>
+             <quill-editor class="col-12" placeholder="Describa la situación actual"
+               formControlName="situacion_actualModificar" [modules]="quillConfig" (onBlur)="blur()"
+               (onSelectionChanged)="onSelectionChanged()"></quill-editor>
+             <div
+               *ngIf="this.situacion_actualModificar?.invalid && (this.situacion_actualModificar?.dirty || this.situacion_actualModificar?.touched)"
+               class="div-asunto">
+               <!-- Errores con expresiones regulares -->
+               <div *ngIf="this.situacion_actualModificar?.hasError('required')"
+                 class="animated fadeIn fast text-danger texto-asunto" id="">
+                 Este campo es requerido.
+               </div>
+             </div>
+           </div>
+
+           <!-- Form prioridad -->
+           <div class="row  form-group div-prioridad">
+             <section class="col-12 col-lg-6 example-section">
+               <p class="example-margin">Nivel de tendencia:<span class="text-danger">*</span></p>
+               <mat-radio-group formControlName="nivel_tendenciaModificar">
+                 <mat-radio-button class="example-margin ms-4 text-secondary" value="Latente">Latente
+                 </mat-radio-button>
+                 <mat-radio-button class="example-margin ms-4 text-success" value="Temprano">Temprano
+                 </mat-radio-button>
+                 <mat-radio-button class="example-margin ms-4 text-warning" value="Pre-crisis">Pre-crisis
+                 </mat-radio-button>
+                 <mat-radio-button class="example-margin ms-4 text-danger" value="Crisis">Crisis</mat-radio-button>
+
+                 <!-- Validacion -->
+                 <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                 <mat-hint
+                   *ngIf="this.nivel_tendenciaModificar?.invalid && (this.nivel_tendenciaModificar?.dirty || this.nivel_tendenciaModificar?.touched)">
+                   <!-- Errores con expresiones regulares -->
+                   <div *ngIf="this.nivel_tendenciaModificar?.hasError('required')"
+                     class="animated fadeIn fast text-danger" id="">
+                     Este campo es requerido.
+                   </div>
+                 </mat-hint>
+               </mat-radio-group>
+             </section>
+
+             <!-- Campo estado -->
+             <section class="col-12 col-lg-4 mt-4 mt-lg-0 example-section">
+               <p class="example-margin mb-0">Estado reunión:<span class="text-danger">*</span></p>
+               <mat-form-field appearance="outline" class="example-full-width">
+                 <!-- <mat-label>Estado</mat-label> -->
+                 <mat-select formControlName="estadoModificar">
+                   <mat-option *ngFor="let estado of estados" [value]="estado.value">
+                     {{estado.estado}}
+                   </mat-option>
+                 </mat-select>
+                 <!-- Validacion -->
+                 <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                 <mat-hint
+                   *ngIf="this.estadoModificar?.invalid && (this.estadoModificar?.dirty || this.estadoModificar?.touched)">
+                   <!-- Errores con expresiones regulares -->
+                   <div *ngIf="this.estadoModificar?.hasError('required')" class="animated fadeIn fast text-danger"
+                     id="">
+                     Este campo es requerido.
+                   </div>
+                 </mat-hint>
+               </mat-form-field>
+             </section>
+           </div>
+         </div>
+         <div class="modal-footer p-4 mt-5">
+           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+
+           <div *ngIf="this.btnSave; else notBtnSaves" class="">
+             <button type="submit" class="btn btn-primary" [disabled]="this.formularioModificar.invalid">
+               Guardar
+             </button>
+           </div>
+
+           <ng-template #notBtnSaves>
+             <button type="submit" class="btn btn-primary d-flex" [disabled]="this.notBtnSaves">
+               <mat-spinner diameter="20"></mat-spinner>
+               <span class="ms-2">Guardando espere por favor..</span>
+             </button>
+           </ng-template>
+
+         </div>
+       </form>
+     </div>
+   </div>
+ </div>
+ <!-- FIN Modal_modificar_reuniones -->
+
+ <!-- Modal mostrar archivos historial -->
+ <div id="myModal_archivos_historial" class="modal  fadeIn fast" tabindex="-1" role="dialog"
+   aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+   <div class="modal-dialog modal-lg">
+     <div class="modal-content">
+       <div class="modal-header bg-warning">
+         <h1 class="modal-title fs-5 text-white display-6" id="exampleModalLabel">Archivos de reunión</h1>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       </div>
+       <div class="modal-body">
+         <div class="col-12">
+           <div class="card">
+             <div class="card-body">
+               <p class="card-title">Lista de archivos</p>
+               <div *ngIf="this.listDownload.length != 0; else notArray">
+                 <div class="table-responsive">
+                   <table class="table">
+                     <thead>
+                       <tr>
+                         <th><span class=" text-black-50 w-25">#</span></th>
+                         <th><span class=" text-black-50 w-25">Nombre</span></th>
+                         <th><span class=" text-black-50 w-25">Acción</span></th>
+                       </tr>
+                     </thead>
+                     <tbody>
+                       <tr *ngFor="let item of this.listDownload; let i = index;">
+                         <td>{{ i+1 }}</td>
+                         <td>{{ item.direccion }}</td>
+                         <td title="Descargar archivo">
+                           <span class="text-archivos text-muted cursor-pointer"
+                             (click)="this.getArchivosHistorial(item.id)" title="Ver archivo"><i
+                               class="icon-ver text-success fa fa-eye"></i></span>
+                         </td>
+
+                       </tr>
+                     </tbody>
+                   </table>
+                 </div>
+               </div>
+               <ng-template #notArray>
+                 <p class="alert-info">No exite archivos para este registro..!</p>
+               </ng-template>
+             </div>
+           </div>
+         </div>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn  btn-secondary waves-effect" data-bs-dismiss="modal">Cerrar</button>
+       </div>
+     </div>
+     <!-- /.modal-content -->
+   </div>
+   <!-- /.modal-dialog -->
+ </div>
+ <!-- FIN Modal mostrar archivos Historial-->
+
+
+ <!-- Modal mostrar archivos -->
+ <div id="myModal_archivos" class="modal  fadeIn fast" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+   aria-hidden="true" style="display: none;">
+   <div class="modal-dialog modal-lg">
+     <div class="modal-content">
+       <div class="modal-header bg-primary">
+         <h1 class="modal-title fs-5 text-white display-6" id="exampleModalLabel">Archivos de reunión</h1>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       </div>
+       <div class="modal-body">
+         <div class="col-12">
+           <div class="card">
+             <div class="card-body">
+               <p class="card-title">Lista de archivos</p>
+               <div *ngIf="this.listDownload.length != 0; else notArray">
+                 <div class="table-responsive">
+                   <table class="table">
+                     <thead>
+                       <tr>
+                         <th><span class=" text-black-50 w-25">#</span></th>
+                         <th><span class=" text-black-50 w-25">Nombre</span></th>
+                         <th><span class=" text-black-50 w-25">Acción</span></th>
+                       </tr>
+                     </thead>
+                     <tbody>
+                       <tr *ngFor="let item of this.listDownload; let i = index;">
+                         <td>{{ i+1 }}</td>
+                         <td>{{ item.direccion }}</td>
+                         <td [width]="30" class="d-flex">
+                           <span class="text-archivos text-muted cursor-pointer" (click)="this.getArchivos(item.id)"
+                             title="Ver archivo"><i class="icon-ver text-success fa fa-eye"></i></span>
+                           <span *ngIf="this.idSecretaria != item.secretaria_id; else notDestroyFiles"
+                             class="disabled text-archivos ms-2 text-dark cursor-pointer" title="Eliminar archivo"><i
+                               class="icon-ver text-danger fa fa-trash"></i></span>
+                           <ng-template #notDestroyFiles>
+                             <span class="text-archivos ms-2 text-muted cursor-pointer"
+                               (click)="this.destroyArchivos(item.id, item.reuniones_id)" title="Eliminar archivo"><i
+                                 class="icon-ver text-danger fa fa-trash"></i></span>
+                           </ng-template>
+                         </td>
+                       </tr>
+                     </tbody>
+                   </table>
+                 </div>
+               </div>
+               <ng-template #notArray>
+                 <p class="alert-info">No exite archivos para este registro..!</p>
+               </ng-template>
+             </div>
+           </div>
+         </div>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn  btn-secondary waves-effect" data-bs-dismiss="modal">Cerrar</button>
+       </div>
+     </div>
+     <!-- /.modal-content -->
+   </div>
+   <!-- /.modal-dialog -->
+ </div>
+ <!-- FIN Modal mostrar archivos -->
+
+ <!-- Modal descargas -->
+ <div id="myModal_descargas" class="modal  fadeIn fast" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+   aria-hidden="true" style="display: none;">
+   <div class="modal-dialog modal-lg">
+     <div class="modal-content">
+       <div class="modal-header bg-warning">
+         <h1 class="modal-title fs-5 text-white display-6" id="exampleModalLabel">Vista Previa</h1>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       </div>
+       <div class="modal-body">
+         <div class="col-12">
+           <div class="row justify-content-center" id="files-contenido">
+             <!-- <div id="files-descargas" style="height: 600px;"></div> -->
+           </div>
+         </div>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn  btn-secondary waves-effect" (click)="descargarImagen()">Descargar</button>
+         <button type="button" class="btn  btn-secondary waves-effect" data-bs-dismiss="modal">Cerrar</button>
+       </div>
+     </div>
+     <!-- /.modal-content -->
+   </div>
+   <!-- /.modal-dialog -->
+ </div>
+ <!-- FIN Modal mostrar archivos Historial-->

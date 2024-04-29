@@ -1,0 +1,99 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark animated fadeIn fast">
+  <div class="container">
+    <a class="navbar-brand">
+      <img src="../../../assets/img/logo-gobernacion.png" alt="Logo" width="300" class="d-inline-block align-text-top">
+    </a>
+    <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button> -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Agregar</a></li>
+            <li><a class="dropdown-item" href="#">Listar</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Agregar</a></li>
+            <li><a class="dropdown-item" href="#">Listar</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Agregar</a></li>
+            <li><a class="dropdown-item" href="#">Listar</a></li>
+          </ul>
+        </li>
+
+      </ul>
+      <form class="d-flex" role="search">
+        <a class="text-white-50 text-decoration-none text-uppercase"><i class="bi bi-window-stack"></i> Coordinación de
+          movimientos sociales</a>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container animated fadeIn fast">
+
+  <div class="row justify-content-center mt-4">
+    <div class="col-12 col-lg-5 text-center">
+      <img src="../../../assets/img/estadoPrurinacional.png" width="200" alt="Acceso al sistema">
+    </div>
+  </div>
+
+  <div class="row justify-content-center p-4 p-sm-0">
+
+
+    <form class="col-12 col-sm-8 col-lg-5 col-xl-4 bg-white p-3 form-login" id="loginform" autocomplete="off"
+      [formGroup]="this.formulario" (ngSubmit)="login()">
+
+      <div *ngIf="this.cargando" class="alert alert-success d-flex justify-content-center animated fadeIn fast"
+        role="alert">
+        <div class="spinner-grow text-success" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="ms-2 align-self-center">
+          Ingresando al Sistema..
+        </div>
+      </div>
+
+      <div class="text-center mb-4">
+        INICIA SESIÓN AQUI
+      </div>
+
+      <!-- Campo Email -->
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Usuario</label>
+        <input type=" text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+          placeholder="* usuario" formControlName="usuario" autocomplete="off">
+        <div id="emailHelp" class="form-text">El usuario es obligatorio</div>
+      </div>
+
+      <!-- Campo contraseñas -->
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="* contraseña"
+          formControlName="password" autocomplete="off">
+        <div id="passHelp" class="form-text">La contraseña es obligatoria</div>
+      </div>
+
+      <!-- Campo recuerdame -->
+      <div class="d-flex justify-content-between">
+        <div class="align-self-center mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1" formControlName="remember">
+          <label class="form-check-label" for="exampleCheck1">Recuerdame</label>
+        </div>
+        <button type="submit" class="btn btn-primary text-uppercase">Iniciar Sesión</button>
+      </div>
+    </form>
+  </div>
+
+</div>

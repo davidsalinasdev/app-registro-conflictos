@@ -1,0 +1,384 @@
+<!-- Migajas de Pan -->
+<div class="contenedor fade animated fadeIn fast">
+  <app-breadcrumbs></app-breadcrumbs>
+</div>
+
+<div class="container-fluid contenido">
+
+  <!-- Boton de crear nueva reunión -->
+  <div class="fade animated fadeIn fast">
+    <div class="row">
+      <div class="col-12">
+        <div class="crear-usuario">
+
+          <!-- Formulario buscar Reuniones -->
+          <mat-form-field class="example-full-width-buscar" appearance="outline">
+            <mat-label>Buscar</mat-label>
+            <input matInput placeholder="Ingrese su busqueda" #texto (keyup)="searchTerm$.next(texto.value)">
+            <mat-icon matSuffix>search</mat-icon>
+            <!-- <mat-hint>Este campo es obligatorio</mat-hint> -->
+          </mat-form-field>
+
+          <button (click)="this.borrarFormulario(formDirective)" (click)="this.getSecretaria()"
+            class="btn btn-primary text-uppercase" data-bs-toggle="modal" data-bs-target="#myModal_agregar"><i
+              class="bi bi-card-heading"></i> Crear
+            Usuario</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla reuniones -->
+  <div class="container-fluid mt-4 fade animated fadeIn fast">
+
+    <!-- Tabla reuniones -->
+    <div *ngIf="this.mostrarReunionHtml; else notMostrar" class=" mt-4 fade animated fadeIn fast">
+      <!-- Loading -->
+      <div *ngIf="this.cargando" class="row animated fadeIn fast">
+        <div class="col-12">
+          <div class="alert alert-primary text-center">
+            <h4 class="alert-heading">Cargando</h4>
+            <i class="fa fa-spin fa-refresh fa-2x"></i>
+            <p class="mb-0">Por favor espere</p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!this.cargando" class="row">
+        <div class="col-12">
+          <div class="table-responsive">
+            <table class="table tabla-datos">
+              <thead class="table bg-primary texto-tabla">
+                <tr class="text">
+                  <th style="width: 5%;">Codigo</th>
+                  <th style="width: 20%;">Nombre completo</th>
+                  <th>Usuario</th>
+                  <th>Secretaria</th>
+                  <th>Rol</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white">
+                <tr class="datos" *ngFor="let item of this.usuarios | paginate: { itemsPerPage: 6, currentPage: this.p, totalItems:
+                    this.total,id: 'unoNormal' }">
+                  <td>{{ item.id }}</td>
+                  <td>{{ item.nombres }} {{ item.apellidos }}</td>
+                  <td class="text-black">{{ item.usuario }}</td>
+                  <td>{{ item.secretaria.nombre }}</td>
+
+                  <td *ngIf="item.rol;else roles"><span class="text-black">Administrador</span></td>
+                  <ng-template #roles>
+                    <td><span class="text-black">Normal</span></td>
+                  </ng-template>
+
+                  <td *ngIf="item.estado;else estados"><span class="text-success">Habilitado</span></td>
+                  <ng-template #estados>
+                    <td><span class="text-danger">Deshabilitado</span></td>
+                  </ng-template>
+
+                  <td>
+                    <div *ngIf="this.idSecretaria != item.secretaria_id; else notSecretaria" class="d-flex">
+                      <a class="disabled ms-3 text-dark cursor-pointer"><i class="icon-font fa  fa-check"></i></a>
+
+                      <a class="disabled ms-3 text-dark cursor-pointer"><i class="icon-font fa fa-trash"></i></a>
+                    </div>
+                    <ng-template #notSecretaria>
+                      <div class="d-flex">
+
+                        <a (click)="this.altaUsuario(item.id, item.nombres, item.apellidos)"
+                          class="alta-usuario ms-3 text-success cursor-pointer"><i class="icon-font fa  fa-check"
+                            title="Alta usuario"></i></a>
+
+                        <a (click)="this.destroyUsuario(item.id, item.nombres, item.apellidos)"
+                          class="baja-usuario ms-3 text-danger cursor-pointer"><i class="icon-font fa fa-trash"
+                            title="Baja usuario"></i></a>
+
+                      </div>
+                    </ng-template>
+
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <!-- Paginación de datos -->
+          <div class="paginacion">
+            <pagination-controls (pageChange)="this.pageChange($event)" previousLabel="Anterior" nextLabel="Siguiente"
+              [maxSize]="5" id="unoNormal">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- FIN Tabla reuniones -->
+
+    <!-- Tabla Buscar Reuniones -->
+    <ng-template #notMostrar class=" mt-4 fade animated fadeIn fast">
+      <!-- Loading -->
+      <div *ngIf="this.cargandoBuscar" class="row animated fadeIn fast">
+        <div class="col-12">
+          <div class="alert alert-primary text-center">
+            <h4 class="alert-heading">Cargando</h4>
+            <i class="fa fa-spin fa-refresh fa-2x"></i>
+            <p class="mb-0">Por favor espere</p>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!this.cargandoBuscar" class="row">
+        <div class="col-12">
+          <div class="table-responsive">
+            <table class="table tabla-datos">
+              <thead class="table bg-primary texto-tabla">
+                <tr class="text">
+                  <th style="width: 5%;">Codigo</th>
+                  <th style="width: 20%;">Nombre completo</th>
+                  <th>Usuario</th>
+                  <th>Secretaria</th>
+                  <th>Rol</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white">
+                <tr class="datos"
+                  *ngFor="let item of this.usersSearch | paginate: { itemsPerPage: 6, currentPage: this.p, totalItems:this.total,id: 'unoNormalUsuario' }">
+                  <td>{{ item.idUsers }}</td>
+                  <td>{{ item.nombres }} {{ item.apellidos }}</td>
+                  <td class="text-black">{{ item.usuario }}</td>
+                  <td>{{ item.nombre }}</td>
+
+                  <td *ngIf="item.rol;else roles"><span class="text-black">Administrador</span></td>
+                  <ng-template #roles>
+                    <td><span class="text-black">Normal</span></td>
+                  </ng-template>
+
+                  <td *ngIf="item.estado;else estados"><span class="text-success">Habilitado</span></td>
+                  <ng-template #estados>
+                    <td><span class="text-danger">Deshabilitado</span></td>
+                  </ng-template>
+
+                  <td>
+                    <div *ngIf="this.idSecretaria != item.idSecretarias; else notSecretaria" class="d-flex">
+                      <a class="disabled ms-3 text-dark cursor-pointer" title="Dar de alta a usuario"><i
+                          class="icon-font fa  fa-check"></i></a>
+
+                      <a class="disabled ms-3 text-dark cursor-pointer" title="Dar de baja a usuario"><i
+                          class="icon-font fa fa-trash"></i></a>
+                    </div>
+                    <ng-template #notSecretaria>
+                      <div class="d-flex">
+                        <a (click)="this.altaUsuarioBuscar(item.idUsers, item.nombres, item.apellidos)"
+                          class="ms-3 text-success cursor-pointer" title="Dar de alta a usuario"><i
+                            class="icon-font fa  fa-check"></i></a>
+
+                        <a (click)="this.destroyUsuarioBuscar(item.idUsers, item.nombres, item.apellidos)"
+                          class="ms-3 text-danger cursor-pointer" title="Dar de baja a usuario"><i
+                            class="icon-font fa fa-trash"></i></a>
+                      </div>
+                    </ng-template>
+
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <!-- Paginación de datos -->
+          <div class="paginacion">
+            <pagination-controls (pageChange)="this.pageChangeBuscar($event)" previousLabel="Anterior"
+              nextLabel="Siguiente" [maxSize]="5" id="unoNormalUsuario">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <!-- FIN Tabla Buscar Reuniones -->
+
+  </div>
+
+  <!-- Modal_registrar_usuarios -->
+  <div class="modal fade animated fadeIn fast" id="myModal_agregar" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h1 class="modal-title fs-5 text-white display-6" id="exampleModalLabel">REGISTRO DE USUARIOS</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <!-- Formulario reunion -->
+        <form #formDirective="ngForm" class="ps-4 pt-4 pe-4 pb-0" [formGroup]="this.formulario" (ngSubmit)="submit()">
+          <div class="modal-body">
+            <div class="row">
+              <!-- Campos nombres -->
+              <div class="col-12 col-md-6 form-group">
+                <p class="mb-0">Nombres:</p>
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <input type="text" matInput formControlName="nombres" autocomplete="off" spellcheck="false"
+                    placeholder="Ingrese su nombre" (keyup)="onInputChange($event)">
+                  <!-- Validacion -->
+                  <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                  <mat-hint *ngIf=" this.nombres?.invalid && (this.nombres?.dirty || this.nombres?.touched)">
+                    <!-- Errores con expresiones regulares -->
+                    <div *ngIf="this.nombres?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                      Este campo es requerido.
+                    </div>
+                    <div *ngIf="this.nombres?.hasError('pattern')" class="animated fadeIn fast text-danger" id="">
+                      Este campo solo acepta letras.
+                    </div>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+
+              <!-- Campos apellidos -->
+              <div class="col-12 col-md-6 form-group">
+                <p class="mb-0">Apellidos:</p>
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <input type="text" matInput formControlName="apellidos" autocomplete="off" spellcheck="false"
+                    placeholder="Ingrese sus apellidos">
+
+                  <!-- Validacion -->
+                  <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                  <mat-hint *ngIf="this.apellidos?.invalid && (this.apellidos?.dirty || this.apellidos?.touched)">
+                    <!-- Errores con expresiones regulares -->
+                    <div *ngIf="this.apellidos?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                      Este campo es requerido.
+                    </div>
+                    <div *ngIf="this.apellidos?.hasError('pattern')" class="animated fadeIn fast text-danger" id="">
+                      Este campo solo acepta letras.
+                    </div>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+
+              <!-- Campos Email -->
+              <div class="col-12 col-md-6 form-group">
+                <p class="mb-0">Usuario:</p>
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <input type="text" matInput formControlName="usuario" autocomplete="off" spellcheck="false"
+                    placeholder="Ingrese su usuario">
+                  <!-- Validacion -->
+                  <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                  <mat-hint *ngIf="this.usuario?.invalid && (this.usuario?.dirty || this.usuario?.touched)">
+                    <!-- Errores con expresiones regulares -->
+                    <div *ngIf="this.usuario?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                      Este campo es requerido.
+                    </div>
+                    <div *ngIf="this.usuario?.hasError('minlength')" class="animated fadeIn fast text-danger" id="">
+                      El nombre de usuario requiere al menos 3 caracteres.
+                    </div>
+                    <div *ngIf="this.usuario?.hasError('maxlength')" class="animated fadeIn fast text-danger" id="">
+                      El nombre de usuario no debe sobrepasar los 20 caracteres.
+                    </div>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+
+
+              <!-- Campos password -->
+              <div class="col-12 col-md-6 form-group">
+                <p class="mb-0">Contraseña:</p>
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <input type="text" matInput formControlName="password" autocomplete="off" spellcheck="false"
+                    placeholder="Ingrese una contraseña">
+                  <!-- Validacion -->
+                  <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                  <mat-hint *ngIf="this.password?.invalid && (this.password?.dirty || this.password?.touched)">
+                    <!-- Errores con expresiones regulares -->
+                    <div *ngIf="this.password?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                      Este campo es requerido.
+                    </div>
+                    <div *ngIf="this.password?.hasError('minlength')" class="animated fadeIn fast text-danger" id="">
+                      La contraseña requiere al menos 4 caracteres.
+                    </div>
+
+                    <div *ngIf="this.password?.hasError('maxlength')" class="animated fadeIn fast text-danger" id="">
+                      La contraseña no debe sobrepasar los 20 caracteres.
+                    </div>
+
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+
+
+            <!-- Campo secretaria-->
+            <div class="row form-group">
+              <div class="col-12 col-lg-8">
+                <p class="mb-0">Secretaria:</p>
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-select formControlName="secretaria" [disabled]="this.isDisabled">
+                    <mat-option *ngFor="let item of this.secretarias; let i=index;" [value]="item.id">
+                      {{ i+1 }}.- {{item.nombre}}
+                    </mat-option>
+                  </mat-select>
+                  <!-- Validacion -->
+                  <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                  <mat-hint *ngIf="this.secretaria?.invalid && (this.secretaria?.dirty || this.secretaria?.touched)">
+                    <!-- Errores con expresiones regulares -->
+                    <div *ngIf="this.secretaria?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                      Este campo es requerido.
+                    </div>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+
+              <!-- Select -->
+              <div class="col-12 col-lg-4">
+                <p class="mb-0">Rol:</p>
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Rol de usuario</mat-label>
+                  <mat-select formControlName="rol">
+                    <mat-option *ngFor="let item of roles" [value]="item.value">
+                      {{item.estado}}
+                    </mat-option>
+                  </mat-select>
+                  <!-- Validacion -->
+                  <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                  <mat-hint *ngIf="this.rol?.invalid && (this.rol?.dirty || this.rol?.touched)">
+                    <!-- Errores con expresiones regulares -->
+                    <div *ngIf="this.rol?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                      Este campo es requerido.
+                    </div>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="text-danger mt-4">
+              *Puedes cambiar el usuario y contraseña sugerida por el sistema.
+            </div>
+
+          </div>
+          <div class="modal-footer p-4">
+
+            <button type="button" class="btn btn-secondary emergente" data-bs-dismiss="modal"
+              title="Cancelar">Cancelar</button>
+            <div *ngIf="this.btnSave; else notBtnSaves" class="">
+              <button type="submit" class="btn btn-primary" [disabled]="this.formulario.invalid">
+                Guardar
+              </button>
+            </div>
+
+            <ng-template #notBtnSaves>
+              <button type="submit" class="btn btn-primary d-flex" [disabled]="this.notBtnSaves">
+                <mat-spinner diameter="20"></mat-spinner>
+                <span class="ms-2">Guardando espere por favor..</span>
+              </button>
+            </ng-template>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- FIN Modal_registrar_reuniones -->
+
+
+</div>

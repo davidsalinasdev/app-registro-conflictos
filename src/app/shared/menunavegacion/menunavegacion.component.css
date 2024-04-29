@@ -1,0 +1,38 @@
+.icono-usuario {
+  font-size: 1.1rem;
+  margin-right: 8px;
+}
+
+.icono-apagar {
+  font-size: 1.2rem;
+  font-weight: bolder;
+}
+
+.navegacion-principal {
+  z-index: 10;
+}
+
+.nav-imagen {
+  width: 180px;
+}
+
+@media (min-width: 576px) {
+  .nav-imagen {
+    width: 200px;
+  }
+}
+
+@media (min-width: 768px) {
+  .nav-imagen {
+    width: 300px;
+  }
+}
+
+.btn-hamburguesa {}
+
+@media (min-width: 992px) {
+  .btn-hamburguesa {
+    display: flex;
+    justify-content: space-between;
+  }
+}

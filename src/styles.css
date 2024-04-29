@@ -1,0 +1,67 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~ngx-toastr/toastr';
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.snow.css';
+
+.fast {
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both
+}
+
+
+body {
+  background-color: #d2d6de;
+}
+
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Angular MAterial */
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.margen-principal {
+  border-top: 3px solid #3c8dbc;
+  border-radius: 3px 3px 0 0;
+}
+
+
+.contenido {
+  background-color: #ffffffd7;
+  padding: 25px;
+  border-top: 3px solid #40739e;
+  border-radius: 5px 5px 2px 2px;
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-bottom: 100px;
+}
+
+.contenedor {
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+}

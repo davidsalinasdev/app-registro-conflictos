@@ -1,0 +1,153 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark animated fadeIn fast navegacion-principal">
+  <a class="navbar-brand ms-2 ms-lg-5" [routerLink]="[ '/home' ]">
+    <img src="../../../assets/img/logo-gobernacion.png" alt="Logo" class="nav-imagen d-inline-block align-text-top">
+  </a>
+
+  <button class="navbar-toggler me-2 me-lg-5 " type="button" data-bs-toggle="collapse"
+    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+    aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse ms-2 ms-lg-5 me-lg-5 ms-lg-0" id="navbarSupportedContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+      <li class="nav-item">
+        <a class="nav-link text-uppercase" [routerLink]="[ '/home' ]" routerLinkActive="active">Panel de control</a>
+      </li>
+
+      <li *ngIf="this.rol" class="nav-item">
+        <a class="nav-link text-uppercase" [routerLink]="[ '/home/usuarios' ]" routerLinkActive="active">Usuarios</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link text-uppercase" [routerLink]="[ '/home/reuniones' ]" routerLinkActive="active">Reuniones</a>
+      </li>
+
+      <li class="nav-item dropdown ">
+        <a class="nav-link dropdown-toggle text-uppercase" href="#" role="button" data-bs-toggle="dropdown"
+          aria-expanded="false">Reportes</a>
+        <ul class="dropdown-menu">
+
+          <!-- <li class="cursor-pointer">
+              <a class="dropdown-item " [routerLink]="[ '/home/porfecha']"><i class="bi bi-calendar-week"></i> Por
+                fecha</a>
+            </li> -->
+          <!-- <li class="cursor-pointer"><a class="dropdown-item" [routerLink]="[ '/home/pormedida']"><i
+                  class="bi bi-card-checklist"></i>
+                Por Medida</a>
+            </li> -->
+          <li class="cursor-pointer"><a class="dropdown-item " [routerLink]="[ '/home/porfecha']"><i
+                class="bi bi-calendar3"></i>
+              Rango de fechas</a>
+          </li>
+          <!-- <li class="cursor-pointer"><a class="dropdown-item " [routerLink]="[ '/home/portendencia']"><i
+                class="bi bi-card-list"></i>
+              Nivel de tendencia</a>
+          </li> -->
+        </ul>
+      </li>
+
+    </ul>
+    <form class="d-flex" role="search">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-uppercase" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false"><i class="icono-usuario bi bi-person-square"></i>
+            {{ this.usuario.nombres }} {{ this.usuario.apellidos }}
+          </a>
+          <ul class="dropdown-menu">
+            <li class="cursor-pointer"><a class="dropdown-item" data-bs-toggle="modal"
+                data-bs-target="#myModal_changes_pass" (click)="this.borrarFormulario(formDirective)"><i
+                  class="icono-apagar bi bi-person-fill"></i>
+                Contraseña</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li class="cursor-pointer"><a class="dropdown-item" (click)="this.logout()"><i
+                  class="icono-apagar bi bi-power"></i>
+                Salir del sistema</a></li>
+          </ul>
+        </li>
+      </ul>
+    </form>
+  </div>
+</nav>
+
+
+<!-- Modal_registrar_reuniones -->
+<div class="modal fade animated fadeIn fast" id="myModal_changes_pass" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h1 class="modal-title fs-5 text-white display-6" id="exampleModalLabel">REGISTRO DE NUEVA CONTRASEÑA</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form #formDirective="ngForm" [formGroup]="this.formulario" class="ps-4 pt-4 pe-4 pb-0" (ngSubmit)="submit()">
+
+        <!-- Contraseña actual -->
+        <div class="col-12 form-group">
+          <p class="mb-0">Contraseña actual:</p>
+
+          <mat-form-field class="example-full-width" appearance="outline">
+
+            <input type="text" matInput formControlName="actualPassword" autocomplete="off" spellcheck="false"
+              placeholder="Ingrese su contraseña actual">
+
+            <!-- Validacion -->
+            <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+            <mat-hint
+              *ngIf="this.actualPassword?.invalid && (this.actualPassword?.dirty || this.actualPassword?.touched)">
+              <!-- Errores con expresiones regulares -->
+              <div *ngIf="this.actualPassword?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                Este campo es requerido.
+              </div>
+
+            </mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 form-group">
+          <p class="mb-0">Nueva contraseña:</p>
+          <mat-form-field class="example-full-width" appearance="outline">
+
+            <input type="text" matInput formControlName="nuevoPassword" autocomplete="off" spellcheck="false"
+              placeholder="Ingrese una nueva contraseña">
+
+            <!-- Validacion -->
+            <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+            <mat-hint *ngIf="this.nuevoPassword?.invalid && (this.nuevoPassword?.dirty || this.nuevoPassword?.touched)">
+              <!-- Errores con expresiones regulares -->
+              <div *ngIf="this.nuevoPassword?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                Este campo es requerido.
+              </div>
+              <div *ngIf="this.nuevoPassword?.hasError('pattern')" class="animated fadeIn fast text-danger" id="">
+                Este campo debe tener 4 caracteres o más.
+              </div>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div class="d-flex mt-2 mb-4 justify-content-end">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+
+          <div *ngIf="this.btnSave; else notBtnSave" class="">
+            <button type="submit" class="ms-2 btn btn-primary" [disabled]="this.formulario.invalid">
+              Guardar
+            </button>
+          </div>
+
+          <ng-template #notBtnSave>
+            <button type="submit" class="ms-2 btn btn-primary d-flex" [disabled]="this.notBtnSave">
+              <mat-spinner diameter="20"></mat-spinner>
+              <span class="ms-2">Guardando..</span>
+            </button>
+          </ng-template>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>
+<!-- FIN Modal_registrar_reuniones -->

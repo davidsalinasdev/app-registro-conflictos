@@ -1,0 +1,118 @@
+.texto-tabla {
+  color: #ffffffd7;
+}
+
+.text th {
+  font-weight: 500;
+  padding: 1rem;
+}
+
+.datos td {
+  padding: 0.8rem;
+  color: #666666;
+}
+
+.icon-font {
+  font-size: 1.1rem;
+}
+
+::ng-deep .cdk-overlay-container {
+  z-index: 9999 !important;
+}
+
+.div-prioridad {
+  margin-top: 6rem;
+}
+
+@media (min-width: 992px) {
+  .div-prioridad {
+    margin-top: 4rem;
+  }
+}
+
+.div-asunto {
+  margin-top: 3rem;
+}
+
+.texto-asunto {
+  font-size: small;
+}
+
+.tabla-datos {
+  box-shadow: 2px 4px 10px -6px rgba(0, 0, 0, .75);
+}
+
+.titulo-gobernacion {
+  font-size: 1rem;
+  font-family: 'Times New Roman', Times, serif !important;
+  text-align: center;
+}
+
+.fuente-mostrar {
+  font-family: 'Times New Roman',
+    Times,
+    serif !important;
+}
+
+.fuente-detalle {
+  font-weight: bold;
+}
+
+.fuente-justificado {
+  text-align: justify !important;
+  padding-left: 5rem;
+}
+
+.motivo-principal {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.estadistica {
+  padding-left: 5rem;
+}
+
+.parrafo-estadistica {
+  font-size: 15px !important;
+}
+
+.texto-tabla {
+  color: #ffffffb2;
+  background: rgb(12, 36, 97);
+  background: linear-gradient(90deg, rgba(12, 36, 97, 1) 0%, rgba(30, 55, 153, 1) 35%, rgba(74, 105, 189, 1) 100%);
+}
+
+::ng-deep .cdk-overlay-container {
+  z-index: 9999 !important;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.3;
+  /*opcional: para dar una apariencia visual de que el botón está deshabilitado*/
+  cursor: not-allowed;
+  /*opcional: para cambiar el cursor al pasar el ratón por encima del botón*/
+}
+
+.example-full-width-buscar {
+  width: 100%;
+}
+
+
+.crear-usuario {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+@media (min-width: 992px) {
+  .example-full-width-buscar {
+    width: 30%;
+  }
+
+  .crear-usuario {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}

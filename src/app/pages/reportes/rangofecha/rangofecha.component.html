@@ -1,0 +1,232 @@
+<!-- Migajas de Pan -->
+<div class="container">
+  <app-breadcrumbs></app-breadcrumbs>
+</div>
+
+<div class="container p-5 fade animated fadeIn fast bg-white margen-principal tabla-datos">
+
+  <div class="row">
+    <div class="col-12 col-lg-8 p-4 border">
+      <form [formGroup]="this.formulario" (ngSubmit)="submit()">
+        <!-- Fecha reunion -->
+        <div class="row formulario-buscar">
+          <div class="col-12 col-lg-6">
+            <!-- Fecha reunion -->
+            <p class="m-t-30 mb-0">Fecha inicio:</p>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Fecha reunión</mat-label>
+
+              <input formControlName="fechainicio" matInput [matDatepicker]="picker" autocomplete="off" readonly>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <!-- Validacion -->
+              <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+              <mat-hint *ngIf="this.fechainicio?.invalid && (this.fechainicio?.dirty || this.fechainicio?.touched)">
+                <!-- Errores con expresiones regulares -->
+                <div *ngIf="this.fechainicio?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                  Este campo es requerido.
+                </div>
+              </mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-lg-6">
+            <!-- Fecha reunion -->
+            <p class="m-t-30 mb-0">Fecha fin:</p>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Fecha reunión</mat-label>
+              <input formControlName="fechafin" matInput [matDatepicker]="pickerDos" autocomplete="off" readonly>
+              <mat-datepicker-toggle matSuffix [for]="pickerDos"></mat-datepicker-toggle>
+              <mat-datepicker #pickerDos></mat-datepicker>
+              <!-- Validacion -->
+              <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+              <mat-hint *ngIf="this.fechafin?.invalid && (this.fechafin?.dirty || this.fechafin?.touched)">
+                <!-- Errores con expresiones regulares -->
+                <div *ngIf="this.fechafin?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                  Este campo es requerido.
+                </div>
+              </mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="boton-reunion">
+            <button type="button" class="btn btn-danger text-white" (click)="this.limpiar()">LIMPIAR</button>
+            <button type="submit" class="btn btn-primary ms-2" [disabled]="this.formulario.invalid">BUSCAR
+              REUNIÓN</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+
+  <!-- Tabla reuniones -->
+
+
+  <!-- Loading -->
+  <div *ngIf="this.cargando" class="row animated fadeIn fast">
+    <div class="col-12">
+      <div class="alert alert-primary text-center">
+        <h4 class="alert-heading">Cargando</h4>
+        <i class="fa fa-spin fa-refresh fa-2x"></i>
+        <p class="mb-0">Por favor espere</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!this.cargando" class="row mt-4">
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table tabla-datos">
+          <thead class="table bg-primary texto-tabla">
+            <tr class="text">
+              <th style="width: 5%;">Codigo</th>
+              <th style="width: 20%;">Motivo</th>
+              <th>Prioridad</th>
+              <th style="width: 12%;">Fecha reunión</th>
+              <th>Estado</th>
+              <th>Usuario</th>
+              <th style="width:15%;">Estado reunión</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr class="datos" *ngFor="let item of this.reuniones">
+              <td>{{ item.id }}</td>
+              <td>{{ item.motivo }}</td>
+              <td>{{ item.prioridad }}</td>
+              <td>{{ item.fecha_reunion }}</td>
+              <td *ngIf="item.estado;else estados"><span class="text-success">Habilitado</span></td>
+              <ng-template #estados>
+                <td><span class="text-danger">Deshabilitado</span></td>
+              </ng-template>
+
+              <td>{{ item.user.nombres }} {{ item.user.apellidos }}</td>
+
+              <td *ngIf="item.estado_reunion;else estadoReunion"><span class="text-success">Concluido</span></td>
+              <ng-template #estadoReunion>
+                <td><span class="text-danger">Pendiente</span></td>
+              </ng-template>
+
+              <td>
+                <div class="d-flex">
+                  <a (click)="this.mostrarReunion(item.id)" class="text-secondary cursor-pointer" title="Ver Reunión"><i
+                      class="icon-font fa fa-eye"></i></a>
+
+                  <!-- <a (click)="this.modificarReunion(item.id)" class="ms-3 text-warning cursor-pointer"
+                    title="Editar Reunión"><i class="icon-font fa fa-pencil"></i></a>
+
+                  <a (click)="this.destroyReunion(item.id, item.motivo)" class="ms-3 text-danger cursor-pointer"
+                    title="Dar de baja reunión"><i class="icon-font fa fa-trash"></i></a> -->
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- Modal_imprimir_reuniones -->
+<div class="modal fade animated fadeIn fast " id="myModal_mostrar" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h1 class="modal-title fs-5 text-white display-6" id="exampleModalLabel">GOBIERNO AUTÓNOMO DEPARTAMENTAL DE
+          COCHABAMBA</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body p-3 bg-white" id="htmlImprimir">
+
+        <!-- Imagenes -->
+        <div class="row">
+          <div class="col-12 d-flex justify-content-between">
+            <div class="">
+              <img width="140" src="../../../assets/img/escudo1.png" alt="">
+            </div>
+            <div class="">
+              <img width="70" src="../../../assets/img/esccocha.png" alt="">
+            </div>
+            <div class="">
+              <img width="140" src="../../../assets/img/escudo2.png" alt="">
+            </div>
+          </div>
+        </div>
+
+        <!-- Titulo gobernación -->
+        <div class="row">
+          <div class="col-12">
+            <div class="titulo-gobernacion">
+              GOBIERNO AUTÓNOMO DEPARTAMENTAL DE COCHABAMBA
+            </div>
+          </div>
+        </div>
+
+        <!-- Titulo principal de la reunión -->
+        <div class="row">
+          <div class="col-12">
+            <h3 class="text-uppercase text-center mt-4 fuente-mostrar motivo-principal">
+              {{ this.reunionMostrar?.motivo }}</h3>
+          </div>
+        </div>
+
+        <!-- Fecha reunión y prioridad -->
+        <div class="row">
+          <div class="col-12 estadistica">
+            <p class="text-uppercase mt-4 mb-0 fuente-mostrar parrafo-estadistica"><span
+                class="text-uppercase fuente-detalle">Prioridad:</span>
+              {{ this.reunionMostrar?.prioridad }}</p>
+
+            <p class="fuente-mostrar mb-0 parrafo-estadistica">
+              <span class="text-uppercase fuente-detalle">Fecha reunión</span>
+              {{ this.reunionMostrar?.fecha_reunion }}
+            </p>
+
+
+            <p class="fuente-mostrar parrafo-estadistica"
+              *ngIf="this.reunionMostrar?.estado_reunion;else estadoReunionMostrar"><span
+                class="text-uppercase fuente-detalle">Estado reunión: </span>
+              CONCLUIDO
+            </p>
+
+            <ng-template #estadoReunionMostrar>
+              <p class="fuente-mostrar parrafo-estadistica"><span class="text-uppercase fuente-detalle">Estado reunión:
+                </span>
+                PENDIENTE
+              </p>
+            </ng-template>
+
+          </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="row">
+          <div class="col-12" id="contenido-principal">
+            <div class="ql-container ql-snow" style="border-width: 0;">
+              <div class="ql-editor fuente-mostrar fuente-justificado" [innerHTML]="this.reunionMostrar?.asunto">
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <div class="modal-footer p-3 mt-5">
+        <button type="button" class="btn btn-secondary text-uppercase" data-bs-dismiss="modal">Cancelar</button>
+        <button (click)="this.imprimirPDF()" [useExistingCss]="true" printSectionId="htmlImprimir" ngxPrint
+          type="button" class="btn btn-primary text-uppercase" data-bs-dismiss="modal"><i class="fa fa-print"></i>
+          Imprimir</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- FIN Modal_imprimir_reuniones -->
